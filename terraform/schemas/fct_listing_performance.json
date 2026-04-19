@@ -1,0 +1,19 @@
+[
+  {"name": "listing_id", "type": "INT64", "mode": "REQUIRED"},
+
+  {"name": "room_type", "type": "STRING"},
+  {"name": "city", "type": "STRING"},
+  {"name": "country", "type": "STRING"},
+
+  {"name": "avg_price_time_series", "type": "FLOAT64"},
+  {"name": "avg_price_ttm", "type": "FLOAT64"},
+
+  {"name": "avg_occupancy", "type": "FLOAT64"},
+  {"name": "total_revenue", "type": "FLOAT64"},
+
+  {"name": "total_reserved_days", "type": "INT64"},
+  {"name": "total_vacant_days", "type": "INT64"},
+
+  {"name": "avg_length_of_stay", "type": "FLOAT64"},
+  {"name": "avg_booking_lead_time", "type": "FLOAT64"}
+]

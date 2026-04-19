@@ -1,0 +1,27 @@
+[
+  {"name": "listing_id", "type": "INT64", "mode": "REQUIRED"},
+
+  {"name": "listing_type", "type": "STRING"},
+  {"name": "room_type", "type": "STRING"},
+
+  {"name": "country", "type": "STRING"},
+  {"name": "state", "type": "STRING"},
+  {"name": "city", "type": "STRING"},
+
+  {"name": "latitude", "type": "FLOAT64"},
+  {"name": "longitude", "type": "FLOAT64"},
+
+  {"name": "guests", "type": "INT64"},
+  {"name": "bedrooms", "type": "FLOAT64"},
+  {"name": "beds", "type": "FLOAT64"},
+  {"name": "baths", "type": "FLOAT64"},
+
+  {"name": "min_nights", "type": "INT64"},
+  {"name": "cancellation_policy", "type": "STRING"},
+  {"name": "superhost", "type": "STRING"},
+  {"name": "instant_book", "type": "STRING"},
+  {"name": "professional_management", "type": "STRING"},
+
+  {"name": "avg_price", "type": "FLOAT64"},
+  {"name": "price_category", "type": "STRING"}
+]

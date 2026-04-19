@@ -1,0 +1,20 @@
+[
+  {"name": "listing_id", "type": "INT64", "mode": "REQUIRED"},
+  {"name": "date", "type": "DATE", "mode": "REQUIRED"},
+
+  {"name": "vacant_days", "type": "INT64"},
+  {"name": "reserved_days", "type": "INT64"},
+
+  {"name": "occupancy", "type": "FLOAT64"},
+  {"name": "revenue", "type": "FLOAT64"},
+  {"name": "avg_rate", "type": "FLOAT64"},
+  {"name": "booked_rate_avg", "type": "FLOAT64"},
+
+  {"name": "booking_lead_time_avg", "type": "FLOAT64"},
+  {"name": "length_of_stay_avg", "type": "FLOAT64"},
+  {"name": "min_nights_avg", "type": "FLOAT64"},
+
+  {"name": "country", "type": "STRING"},
+  {"name": "state", "type": "STRING"},
+  {"name": "city", "type": "STRING"}
+]
