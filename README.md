@@ -46,52 +46,54 @@ Visualization	Looker Studio
 This is a batch pipeline, executed on demand or on schedule.
 
 <b>1. Data Ingestion</b><br>
-Raw Airbnb data stored as Parquet files was loaded into BigQuery as:
+Raw Airbnb data stored as Parquet files was loaded into BigQuery as:<br>
   * listings_raw
   * past_rates_raw
 
 <b>2. Data Transformation</b><br>
-Three main tables were created:
-<b>•	dim_listings</b>
+Three main tables were created:<br>
+<b>•	dim_listings</b><br>
 
- Cleaned listing-level data includes:
+ Cleaned listing-level data includes:<br>
 * location (city, country)
 * room type
 * pricing category
 I handled missing values (e.g. unknown room types by assigning them the value of “unknown”).
 
-<b>•	fact_rates</b>
-This time-series performance data includes:
+<b>•	fact_rates</b><br>
+This time-series performance data includes:<br>
   * revenue
   * occupancy
   * booking behavior
 I partitioned the table by date and clustered for performance.
 
-<b>•	fct_listing_performance</b>
-This is an aggregated performance table which includes:
+<b>•	fct_listing_performance</b><br>
+This is an aggregated performance table which includes:<br>
   * total revenue
   * average occupancy
   * pricing metrics
 
 <b>3. Orchestration</b><br>
-All transformations are automated using Kestra and it includes
+All transformations are automated using Kestra and it includes<br>
 * Multi-step DAG
 * Executes SQL transformations in sequence
 * Rebuilds tables on each run
 * Can be scheduled (daily)
 
 <b>4. Dashboard</b><br>
-The dashboard is built in Looker Studio and structured into two pages:
+The dashboard is built in Looker Studio and structured into two pages:<br>
 
-<b>Page 1: Performance Overview</b>
-This provides a high-level summary as follows:
+Looker Studio Dashboard link: <https://datastudio.google.com/s/mPed-xz3Fe8>
+<br><br>
+<b>Page 1: Performance Overview</b><br>
+This provides a high-level summary as follows:<br>
 * Revenue by country and city
 * Revenue trend over time
 * Revenue by room type
 * Price category distribution
 
-<b>Page 2 - Listing Insights</b>
-This provides deeper analysis:
+<b>Page 2 - Listing Insights</b><br>
+This provides deeper analysis:<br>
 * Price vs occupancy (scatter plot)
 * Occupancy by room type
 * Price by room type
