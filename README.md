@@ -92,11 +92,17 @@ This provides a high-level summary as follows:<br>
 * Revenue by room type
 * Price category distribution
 
+<img width="720" height="413" alt="Screenshot 2026-04-21 at 20-35-45 DataTalk_Airbnb_Data_Pipeline_Project pdf" src="https://github.com/user-attachments/assets/e441ca07-422e-4e55-a17a-8b2213c3c7d8" />
+
+
 <b>Page 2 - Listing Insights</b><br>
 This provides deeper analysis:<br>
 * Price vs occupancy (scatter plot)
 * Occupancy by room type
 * Price by room type
+
+<img width="720" height="540" alt="Screenshot 2026-04-21 at 20-37-05 DataTalk_Airbnb_Data_Pipeline_Project pdf" src="https://github.com/user-attachments/assets/f5c73ef5-bf2b-462b-9233-ef9242a00426" />
+
 
 <b>5. Key Insights</b><br>
 * Most listings are priced in the lower range but still achieve high occupancy
