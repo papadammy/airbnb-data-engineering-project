@@ -1,0 +1,97 @@
+id: airbnb_pipeline
+namespace: airbnb
+
+description: Airbnb batch pipeline (BigQuery transformations)
+
+tasks:
+
+  - id: build_dim_listings
+    type: io.kestra.plugin.gcp.bigquery.Query
+    sql: |
+      CREATE OR REPLACE TABLE `datatalks-airbnb-data-project.airbnb_data.dim_listings`
+      CLUSTER BY listing_id, city AS
+      SELECT
+        SAFE_CAST(listing_id AS INT64) AS listing_id,
+        listing_type,
+        room_type,
+        country,
+        state,
+        city,
+        SAFE_CAST(latitude AS FLOAT64) AS latitude,
+        SAFE_CAST(longitude AS FLOAT64) AS longitude,
+        SAFE_CAST(guests AS INT64) AS guests,
+        SAFE_CAST(bedrooms AS FLOAT64) AS bedrooms,
+        SAFE_CAST(beds AS FLOAT64) AS beds,
+        SAFE_CAST(baths AS FLOAT64) AS baths,
+        SAFE_CAST(min_nights AS INT64) AS min_nights,
+        cancellation_policy,
+        superhost,
+        instant_book,
+        professional_management,
+        SAFE_CAST(ttm_avg_rate AS FLOAT64) AS avg_price,
+        CASE 
+          WHEN SAFE_CAST(ttm_avg_rate AS FLOAT64) < 50 THEN 'cheap'
+          WHEN SAFE_CAST(ttm_avg_rate AS FLOAT64) < 150 THEN 'moderate'
+          ELSE 'expensive'
+        END AS price_category
+      FROM `datatalks-airbnb-data-project.airbnb_data.listings_raw`
+      WHERE listing_id IS NOT NULL;
+
+  - id: build_fact_rates
+    type: io.kestra.plugin.gcp.bigquery.Query
+    sql: |
+      CREATE OR REPLACE TABLE `datatalks-airbnb-data-project.airbnb_data.fact_rates`
+      PARTITION BY date
+      CLUSTER BY listing_id, city AS
+      SELECT
+        SAFE_CAST(listing_id AS INT64) AS listing_id,
+        DATE(date) AS date,
+        SAFE_CAST(vacant_days AS INT64) AS vacant_days,
+        SAFE_CAST(reserved_days AS INT64) AS reserved_days,
+        SAFE_CAST(occupancy AS FLOAT64) AS occupancy,
+        SAFE_CAST(revenue AS FLOAT64) AS revenue,
+        SAFE_CAST(rate_avg AS FLOAT64) AS avg_rate,
+        SAFE_CAST(booked_rate_avg AS FLOAT64) AS booked_rate_avg,
+        SAFE_CAST(booking_lead_time_avg AS FLOAT64) AS booking_lead_time_avg,
+        SAFE_CAST(length_of_stay_avg AS FLOAT64) AS length_of_stay_avg,
+        SAFE_CAST(min_nights_avg AS FLOAT64) AS min_nights_avg,
+        country,
+        state,
+        city
+      FROM `datatalks-airbnb-data-project.airbnb_data.past_rates_raw`
+      WHERE listing_id IS NOT NULL
+        AND date IS NOT NULL;
+
+  - id: build_fct_listing_performance
+    type: io.kestra.plugin.gcp.bigquery.Query
+    sql: |
+      CREATE OR REPLACE TABLE `datatalks-airbnb-data-project.airbnb_data.fct_listing_performance`
+      CLUSTER BY city, room_type AS
+      SELECT
+        l.listing_id,
+        l.room_type,
+        l.city,
+        l.country,
+        AVG(f.avg_rate) AS avg_price_time_series,
+        l.avg_price AS avg_price_ttm,
+        AVG(f.occupancy) AS avg_occupancy,
+        SUM(f.revenue) AS total_revenue,
+        SUM(f.reserved_days) AS total_reserved_days,
+        SUM(f.vacant_days) AS total_vacant_days,
+        AVG(f.length_of_stay_avg) AS avg_length_of_stay,
+        AVG(f.booking_lead_time_avg) AS avg_booking_lead_time
+      FROM `datatalks-airbnb-data-project.airbnb_data.fact_rates` f
+      JOIN `datatalks-airbnb-data-project.airbnb_data.dim_listings` l
+      ON f.listing_id = l.listing_id
+      GROUP BY
+        l.listing_id,
+        l.room_type,
+        l.city,
+        l.country,
+        l.avg_price;
+        
+        
+triggers:
+  - id: daily
+    type: io.kestra.plugin.core.trigger.Schedule
+    cron: "0 6 * * *"        
