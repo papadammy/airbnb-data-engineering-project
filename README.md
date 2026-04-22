@@ -35,18 +35,16 @@ This project transforms raw Airbnb data into structured, analysis-ready datasets
 
 <br><br>
 <b>Tech Stack</b><br>
+
 <table>
-
         <tr>
            <td>Component</td>
            <td>Tool</td>
         </tr>
-
         <tr>
            <td>Component</td>
            <td>Tool</td>
         </tr>
-
         <tr>
            <td>Cloud Platform</td>
            <td>GCP</td>
@@ -69,7 +67,7 @@ This project transforms raw Airbnb data into structured, analysis-ready datasets
         </tr>
         <tr>
            <td>Transformation</td>
-           <td>SQK</td>
+           <td>SQL</td>
         </tr>
         <tr>
            <td>Visualization</td>
