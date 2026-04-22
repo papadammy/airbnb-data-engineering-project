@@ -7,13 +7,17 @@ tasks:
 
   - id: build_dim_listings
     type: io.kestra.plugin.gcp.bigquery.Query
+    projectId: datatalks-airbnb-data-project
     sql: |
       CREATE OR REPLACE TABLE `datatalks-airbnb-data-project.airbnb_data.dim_listings`
       CLUSTER BY listing_id, city AS
       SELECT
         SAFE_CAST(listing_id AS INT64) AS listing_id,
         listing_type,
-        room_type,
+        CASE 
+        WHEN room_type IS NULL OR room_type = '' THEN 'unknown'
+        ELSE room_type
+        END AS room_type,
         country,
         state,
         city,
@@ -39,6 +43,7 @@ tasks:
 
   - id: build_fact_rates
     type: io.kestra.plugin.gcp.bigquery.Query
+    projectId: datatalks-airbnb-data-project
     sql: |
       CREATE OR REPLACE TABLE `datatalks-airbnb-data-project.airbnb_data.fact_rates`
       PARTITION BY date
@@ -64,6 +69,7 @@ tasks:
 
   - id: build_fct_listing_performance
     type: io.kestra.plugin.gcp.bigquery.Query
+    projectId: datatalks-airbnb-data-project
     sql: |
       CREATE OR REPLACE TABLE `datatalks-airbnb-data-project.airbnb_data.fct_listing_performance`
       CLUSTER BY city, room_type AS
@@ -89,7 +95,8 @@ tasks:
         l.city,
         l.country,
         l.avg_price;
-        
+
+
         
 triggers:
   - id: daily
