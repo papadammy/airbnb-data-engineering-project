@@ -27,20 +27,45 @@ This project transforms raw Airbnb data into structured, analysis-ready datasets
                 ↓
         Transformations (SQL via Kestra)
                 ↓
-   dim_listings / fact_rates / fct_listing_performance
+   `dim_listings / fact_rates / fct_listing_performance
                 ↓
-        Looker Studio Dashboard
+        Looker Studio Dashboard`
 
 <b>Tech Stack</b><br>
-Component	Tool
-Cloud Platform	GCP
-Data Lake	Google Cloud Storage
-Data Warehouse	BigQuery
-Infrastructure as Code	Terraform
-Ochestration	Kestra
-Transformation	SQL
-Visualization	Looker Studio
-
+<table>
+        <th>
+           <td>Component</td>
+           <td>Tool</td>
+        </th>
+        <tr>
+           <td>Cloud Platform</td>
+           <td>GCP</td>
+        </tr>
+        <tr>
+           <td>Data Lake</td>
+           <td>Google Cloud Storage</td>
+        </tr>
+        <tr>
+           <td>Data Warehouse</td>
+           <td>BigQuery</td>
+        </tr>
+        <tr>
+           <td>Infrastructure as Code</td>
+           <td>Terraform</td>
+        </tr>
+        <tr>
+           <td>Ochestration</td>
+           <td>Kestra</td>
+        </tr>
+        <tr>
+           <td>Transformation</td>
+           <td>SQK</td>
+        </tr>
+        <tr>
+           <td>Visualization</td>
+           <td>Looker Studio</td>
+        </tr>
+</table>
 
 <b>Pipeline Design and Process</b><br>
 This is a batch pipeline, executed on demand or on schedule.
@@ -51,7 +76,7 @@ Raw Airbnb data stored as Parquet files was loaded into BigQuery as:<br>
   * past_rates_raw
 
 <b>2. Data Transformation</b><br>
-Three main tables were created:<br>
+Three main tables were created:<br><br>
 <b>•	dim_listings</b><br>
 
  Cleaned listing-level data includes:<br>
@@ -117,40 +142,41 @@ This provides deeper analysis:<br>
 * Data types were standardized using SAFE_CAST
 
 <b>7. How to Run the Project</b><br>
- 1. Clone the repository
+ 1. Clone the repository<br>
 
-git clone <https://github.com/papadammy/airbnb-data-engineering-project>
+git clone <https://github.com/papadammy/airbnb-data-engineering-project><br>
 cd airbnb-project
 
-2. Set up Terraform
+2. Set up Terraform<br>
 
-cd terraform
-terraform init
-terraform apply
+cd terraform<br>
+terraform init<br>
+terraform apply<br>
 
-3. Authenticate with GCP
+3. Authenticate with GCP<br>
 
 gcloud auth application-default login
 
-4. Run Kestra
+4. Run Kestra<br>
 
-docker run --pull=always --rm -it -p 8080:8080 \
+`docker run --pull=always --rm -it -p 8080:8080 \
   --user=root \
   -e GOOGLE_APPLICATION_CREDENTIALS=/app/adc.json \
   -v $HOME/.config/gcloud/application_default_credentials.json:/app/adc.json:ro \
   -v kestra_data:/app/storage \
   -v kestra_db:/app/data \
   -v /var/run/docker.sock:/var/run/docker.sock \
-  kestra/kestra:latest server local
+  kestra/kestra:latest server local`
 
-5. Execute the pipeline
+5. Execute the pipeline<br>
 
 * Open: http://localhost:8080
-* Upload the YAML flow
+* Login: Username - admin@admin.com, password - @Admin101
+* Upload the YAML flow (Flow/airbnb_pipeline.yml)
 * Click Execute
 
-6. Open dashboard
-Looker Studio Dashboard link: <https://datastudio.google.com/s/mPed-xz3Fe8>
+6. Open dashboard<br>
+Looker Studio Dashboard link: <https://datastudio.google.com/s/mPed-xz3Fe8><br>
 * Connect Looker Studio to BigQuery
 * Load fct_listing_performance and fact_rates
 * View the dashboard
